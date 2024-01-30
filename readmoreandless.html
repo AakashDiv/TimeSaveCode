@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .textless {
+    display: -webkit-box;
+    width: 100%;
+    height: 20px;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.txt-more {
+    height: unset !important;
+    -webkit-line-clamp: revert !important;
+    overflow: revert !important;
+}
+    </style>
+</head>
+<body>
+    <p class="information textless">Himanshu has two decades of experience in Investment Research and Asset Management across asset classes. He has been with Asas since its inception managing proprietary equity investments and has executed numerous private equity transactions. He currently heads our Investment team focused on cutting edge value creation strategies.
+
+        Prior to Asas Capital Ltd, Himanshu worked as a portfolio manager with a $400 million AUM at Kotak Securities, India’s largest financial services company.
+        
+        He is a CFA charter holder and holds a Master’s degree in Business Administration from IBS Hyderabad.</p>
+        <!-- <a onclick="return clickFun(this)" class="r-more-btn" href="#0">Read More</a> -->
+        <a  class="readMoreLess" href="#0">Read More</a>
+        <p class="information textless">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum quaerat deserunt dolor repudiandae corrupti temporibus sunt expedita animi distinctio nisi voluptatibus possimus veniam dolorem in ullam fugit quisquam totam porro molestias recusandae, tenetur error reprehenderit alias corporis! Doloremque molestias odit perspiciatis necessitatibus nihil voluptatem consequuntur similique mollitia quisquam delectus dicta dolores, nulla earum omnis ipsum quas pariatur fugiat laudantium debitis culpa possimus aliquam at quos. Id nobis accusantium impedit, veritatis similique ad! Voluptatem facilis facere assumenda quisquam qui repellat esse amet doloremque aperiam officiis necessitatibus, velit at repudiandae harum in possimus natus inventore laboriosam iste animi. Fugiat consequuntur dolor quam a quasi tenetur voluptatem adipisci eum ut! Adipisci, nesciunt ipsum. Laborum modi architecto, quos dignissimos hic maiores dolore nam quas blanditiis labore nobis adipisci eius incidunt veniam repellendus dicta repudiandae ipsa dolorem perferendis magni error vel. Repellendus illum veritatis ea. Quisquam architecto accusantium ratione ipsum ipsam maxime aliquid deleniti cupiditate.
+        </p>
+        <a  class="readMoreLess" href="#0">Read More</a>
+            
+
+
+<!-- Read More and Less with Height  -->
+<script>
+var readmorebtn = document.querySelectorAll('.readMoreLess');
+readmorebtn.forEach((item) => {
+    item.addEventListener('click', () => {
+        var prevElm = item.previousElementSibling;
+
+        if (item.innerHTML == "Read More" && prevElm.className == "information textless") {
+            prevElm.classList.remove('textless');
+            prevElm.classList.add('txt-more');
+            item.innerHTML = "Read Less";
+        } else {
+            item.innerHTML = "Read More";
+            prevElm.classList.remove('txt-more');
+            prevElm.classList.add('textless');
+        }
+    });
+});
+
+</script>
+<!-- Read More and Less with Height  -->
+
+</body>
+</html>
