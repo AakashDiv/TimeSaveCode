@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+  }
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1 {
+    color: #333;
+    font-size: 32px;
+    margin: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .download-btn {
+    display: block;
+    width: 150px;
+    margin: 30px auto;
+    padding: 15px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .download-btn:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>John Doe's Resume</h1>
+    </div>
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>John Doe</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>johndoe@example.com</td>
+      </tr>
+      <tr>
+        <th>Phone</th>
+        <td>123-456-7890</td>
+      </tr>
+      <tr>
+        <th>Education</th>
+        <td>Bachelor's Degree in Computer Science</td>
+      </tr>
+      <tr>
+        <th>Experience</th>
+        <td>3 years of experience as a software engineer</td>
+      </tr>
+      <tr>
+        <th>Skills</th>
+        <td>JavaScript, HTML, CSS, Python, SQL</td>
+      </tr>
+    </table>
+    <a href="#" class="download-btn" onclick="window.print()">Download PDF</a>
+  </div>
+</body>
+</html>

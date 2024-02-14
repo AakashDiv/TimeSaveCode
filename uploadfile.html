@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+    <style>
+        /* Upload Area */
+        .upload-area {
+            width: 50%;
+            border: 1px dashed #000;
+            border-radius: 10px;
+            text-align: center;
+            padding: 25px 34px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .upload-area__tooltip-data {
+            display: none;
+        }
+        
+        /* Drop Zone */
+        .upload-area__drop-zone {
+            position: relative;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 2px dashed var(--clr-primary);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: border-color 300ms ease-in-out;
+        }
+        
+        .upload-area__drop-zone:hover {
+            border-color: var(--bg-light);
+        }
+        
+        .drop-zone__paragraph {
+            font-size: 0.9375rem;
+            color: grey;
+            margin: 0;
+            margin-top: 0.625rem;
+        }
+        
+        .drop-zone__loading-text {
+            display: none;
+            color: blueviolet;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .drop-zone__preview-image {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 0.3125rem;
+            border-radius: 10px;
+        }
+        
+        .drop-zone__file-input {
+            display: none;
+        }
+        
+        /* (drop-zone--over) Modifier Class */
+        .drop-zone--over {
+            border-color: blue;
+        }
+        
+        /* File Details Area */
+        .upload-area__file-details {
+            display: none;
+            text-align: left;
+        }
+        
+        /* Uploaded File */
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            padding: 0.625rem 0;
+        }
+        
+        .uploaded-file__icon-container {
+            position: relative;
+            margin-right: 0.3125rem;
+        }
+        
+        .uploaded-file__icon {
+            font-size: 3.4375rem;
+            color: blue;
+        }
+        
+        .uploaded-file__icon-text {
+            position: absolute;
+            top: 1.5625rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--clr-white);
+        }
+        
+        .uploaded-file__info {
+            position: relative;
+            top: -0.3125rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .uploaded-file__info::before,
+        .uploaded-file__info::after {
+            content: '';
+            position: absolute;
+            bottom: -0.9375rem;
+            width: 0;
+            height: 0.5rem;
+            border-radius: 0.625rem;
+        }
+        
+        .uploaded-file__info::before {
+            width: 100%;
+            background-color: #ebf2ff;
+        }
+        
+        .uploaded-file__info::after {
+            width: 0;
+            background-color: blue;
+            animation: progressMove 800ms ease-in-out;
+            animation-delay: 300ms;
+        }
+        
+        @keyframes progressMove {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .uploaded-file__name {
+            width: 100%;
+            max-width: 6.25rem; /* 100px */
+            display: inline-block;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .uploaded-file__counter {
+            font-size: 1rem;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="uploadArea" class="upload-area">
+        <span class="upload-area__tooltip-data">DOC, PDF</span> 
+        <!-- Drop Zone -->
+        <div id="dropZone" class="upload-area__drop-zone drop-zone">
+            <span class="drop-zone__icon">
+                <i class='bx bxs-file-image'></i>
+            </span>
+            <p class="drop-zone__paragraph">Drop your Resume file here or click to select</p>
+            <span id="loadingText" class="drop-zone__loading-text">Please wait...</span>
+            <img src="" alt="Preview Image" id="previewImage" class="drop-zone__preview-image">
+            <input type="file" id="fileInput" class="drop-zone__file-input" accept=".doc, .docx, .pdf">
+        </div>
+        <!-- End Drop Zone -->
+      
+        <!-- File Details -->
+        <div id="fileDetails" class="upload-area__file-details file-details">
+            <h3 class="file-details__title">Uploaded File</h3>
+      
+            <div id="uploadedFile" class="uploaded-file">
+                <div class="uploaded-file__icon-container">
+                    <i class='bx bxs-file-blank uploaded-file__icon'></i>
+                    <span class="uploaded-file__icon-text"></span>
+                </div>
+      
+                <div id="uploadedFileInfo" class="uploaded-file__info">
+                    <span class="uploaded-file__name">File Name</span>
+                    <span class="uploaded-file__counter">0%</span>
+                </div>
+            </div>
+        </div>
+        <!-- End File Details -->
+    </div>
+    <!-- End Upload Area -->
+
+    <script>
+        const dropZone = document.querySelector('#dropZone');
+        const loadingText = document.querySelector('#loadingText');
+        const fileInput = document.querySelector('#fileInput');
+        const previewImage = document.querySelector('#previewImage');
+        const fileDetails = document.querySelector('#fileDetails');
+        const uploadedFileName = document.querySelector('.uploaded-file__name');
+        const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
+        const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
+        const documentTypes = ["doc", "pdf"];
+
+        dropZone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            dropZone.classList.add('drop-zone--over');
+        });
+
+        dropZone.addEventListener('dragleave', function (event) {
+            dropZone.classList.remove('drop-zone--over');
+        });
+
+        dropZone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            dropZone.classList.remove('drop-zone--over');
+            const file = event.dataTransfer
+
+.files[0];
+            uploadFile(file);
+        });
+
+        dropZone.addEventListener('click', function (event) {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            uploadFile(file);
+        });
+
+        function uploadFile(file) {
+            const fileType = file.type;
+            const fileSize = file.size;
+
+            if (fileValidate(fileType, fileSize)) {
+                loadingText.style.display = "block";
+                fileDetails.style.display = 'block';
+                uploadedFileName.textContent = file.name;
+                progressMove();
+            } else {
+                fileInput.value = '';
+                alert('Please upload a DOC or PDF file and ensure it is 2 megabytes or less in size.');
+            }
+        }
+
+        function progressMove() {
+            let counter = 0;
+            let counterIncrease = setInterval(() => {
+                if (counter === 100) {
+                    clearInterval(counterIncrease);
+                } else {
+                    counter += 10;
+                    uploadedFileCounter.textContent = `${counter}%`;
+                }
+            }, 100);
+        }
+
+        function fileValidate(fileType, fileSize) {
+            let isValid = documentTypes.some(type => fileType === `application/${type}`);
+            return isValid && fileSize <= 2000000;
+        }
+    </script>
+</body>
+</html>
